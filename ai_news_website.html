@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Hub - US-China Technology & Politics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f8fafc;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #60a5fa, #34d399, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #60a5fa;
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .breaking-news {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .admin-panel {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #60a5fa;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .category-us-news { background: #fee2e2; color: #dc2626; }
+        .category-china-news { background: #fef3c7; color: #d97706; }
+        .category-ai-tech { background: #ede9fe; color: #7c3aed; }
+        .category-analysis { background: #cffafe; color: #0891b2; }
+        .category-breaking { background: #dcfce7; color: #16a34a; }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .news-summary {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">🧠 AI News Hub</div>
+            <ul class="nav-menu">
+                <li><a href="#home">🏠 Home</a></li>
+                <li><a href="#us-news">🇺🇸 US News</a></li>
+                <li><a href="#china-news">🇨🇳 China News</a></li>
+                <li><a href="#ai-tech">🤖 AI & Tech</a></li>
+                <li><a href="#analysis">📊 Analysis</a></li>
+            </ul>
+            <button class="admin-btn" onclick="toggleAdmin()">➕ Add Article</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="breaking-news">
+            ⚡ Breaking: US and China announce joint AI safety research initiative
+        </div>
+
+        <div class="admin-panel" id="adminPanel">
+            <h2>📝 Add New Article</h2>
+            <form class="admin-form" onsubmit="addArticle(event)">
+                <div class="form-group">
+                    <label>📰 Article Title</label>
+                    <input type="text" id="title" placeholder="Enter compelling headline..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label>🏷️ Category</label>
+                    <select id="category" required>
+                        <option value="us-news">🇺🇸 US News</option>
+                        <option value="china-news">🇨🇳 China News</option>
+                        <option value="ai-tech">🤖 AI & Tech</option>
+                        <option value="analysis">📊 Analysis</option>
+                        <option value="breaking">⚡ Breaking News</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>📝 Article Summary</label>
+                    <textarea id="summary" placeholder="Write a compelling summary..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>🖼️ Image URL (optional)</label>
+                    <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+    <label>🎥 News Video URL (YouTube or direct link, optional)</label>
+    <input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=... or direct video link">
+</div>
+                <div class="form-group">
+                    <label>👤 Author</label>
+                    <input type="text" id="author" value="AI News Hub Team" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">🚀 Publish Article</button>
+            </form>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="🔍 Search news articles..." onkeyup="filterNews()">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterByCategory('all')">🌍 All News</button>
+            <button class="filter-btn" onclick="filterByCategory('us-news')">🇺🇸 US News</button>
+            <button class="filter-btn" onclick="filterByCategory('china-news')">🇨🇳 China News</button>
+            <button class="filter-btn" onclick="filterByCategory('ai-tech')">🤖 AI & Tech</button>
+            <button class="filter-btn" onclick="filterByCategory('analysis')">📊 Analysis</button>
+            <button class="filter-btn" onclick="filterByCategory('breaking')">⚡ Breaking</button>
+        </div>
+
+        <div class="news-grid" id="newsGrid"></div>
+    </div>
+
+    <footer class="footer">
+        <h3>🧠 AI News Hub</h3>
+        <p>Professional coverage of US-China AI developments and global technology trends.</p>
+        <p style="margin-top: 1rem; opacity: 0.7;">&copy; 2025 AI News Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Comprehensive news articles database
+        let defaultArticles = [
+            {
+                id: 1,
+                title: "Biden Administration Unveils New AI Executive Order",
+                category: "us-news",
+                summary: "President Biden signs comprehensive AI executive order requiring safety testing for powerful AI systems, establishing new oversight mechanisms, and promoting AI innovation while protecting workers and consumers.",
+                imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop",
+                author: "Sarah Johnson",
+                date: "2025-09-10"
+            },
+            {
+                id: 2,
+                title: "China's Baidu Releases Advanced AI Model ERNIE 4.0",
+                category: "china-news",
+                summary: "Baidu unveils ERNIE 4.0, claiming performance improvements over GPT-4 in Chinese language tasks. The model demonstrates enhanced reasoning capabilities and multimodal understanding.",
+                imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop",
+                author: "Michael Chen",
+                date: "2025-09-09"
+            },
+            {
+                id: 3,
+                title: "US-China AI Trade War: Economic Impact Analysis",
+                category: "analysis",
+                summary: "New research shows AI trade restrictions between US and China have cost both economies $47 billion. Experts discuss potential paths to cooperation in AI development.",
+                imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=300&fit=crop",
+                author: "Dr. Emily Rodriguez",
+                date: "2025-09-08"
+            },
+            {
+                id: 4,
+                title: "Breakthrough: Quantum-Enhanced AI Achieves New Milestone",
+                category: "ai-tech",
+                summary: "Researchers demonstrate quantum computer solving complex optimization problems 1000x faster than classical AI. The breakthrough could revolutionize drug discovery and financial modeling.",
+                imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&h=300&fit=crop",
+                author: "Prof. James Liu",
+                date: "2025-09-07"
+            },
+            {
+                id: 5,
+                title: "NVIDIA vs Chinese AI Chips: The Battle Intensifies",
+                category: "breaking",
+                summary: "Chinese semiconductor companies unveil new AI chips designed to compete with NVIDIA's H100. US export controls drive innovation in China's domestic chip industry.",
+                imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop",
+                author: "Tech Desk",
+                date: "2025-09-10"
+            },
+            {
+                id: 6,
+                title: "Pentagon Establishes AI Ethics Board",
+                category: "us-news",
+                summary: "Department of Defense creates new oversight body for military AI applications. The board will review autonomous weapon systems and ensure human oversight in critical decisions.",
+                imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop",
+                author: "Defense Reporter",
+                date: "2025-09-06"
+            },
+            {
+                id: 7,
+                title: "China Announces $100 Billion AI Investment Fund",
+                category: "china-news",
+                summary: "Beijing unveils massive state-backed fund to accelerate AI research and development. Focus areas include healthcare AI, autonomous vehicles, and smart city technologies.",
+                imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=500&h=300&fit=crop",
+                author: "Beijing Correspondent",
+                date: "2025-09-05"
+            },
+            {
+                id: 8,
+                title: "AI in Healthcare: US-China Collaboration Emerges",
+                category: "analysis",
+                summary: "Despite broader tensions, US and Chinese researchers find common ground in AI-powered drug discovery. Joint projects show promise for addressing global health challenges.",
+                imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=300&fit=crop",
+                author: "Health Tech Analyst",
+                date: "2025-09-04"
+            },
+            {
+                id: 9,
+                title: "Meta Announces Open Source AI Competitor to ChatGPT",
+                category: "ai-tech",
+                summary: "Meta releases Llama 3, an open-source large language model designed to compete with OpenAI's GPT-4. The move could reshape the AI landscape and increase global access.",
+                imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop",
+                author: "Silicon Valley Reporter",
+                date: "2025-09-03"
+            },
+            {
+                id: 10,
+                title: "Congress Proposes Bipartisan AI Regulation Framework",
+                category: "us-news",
+                summary: "House and Senate introduce comprehensive AI regulation bill focusing on transparency, safety testing, and liability frameworks. Industry leaders express cautious optimism.",
+                imageUrl: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=500&h=300&fit=crop",
+                author: "Capitol Hill Reporter",
+                date: "2025-09-02"
+            },
+            {
+                id: 11,
+                title: "Alibaba's AI Cloud Services Expand Globally",
+                category: "china-news",
+                summary: "Alibaba Cloud launches AI services in 15 new countries, challenging AWS and Google Cloud. The expansion includes language models optimized for local markets.",
+                imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop",
+                author: "Cloud Computing Expert",
+                date: "2025-09-01"
+            },
+            {
+                id: 12,
+                title: "AI Job Market: Winners and Losers in 2025",
+                category: "analysis",
+                summary: "Comprehensive analysis of AI's impact on employment shows 40% job displacement but 60% new job creation. Reskilling programs become critical for workforce adaptation.",
+                imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop",
+                author: "Labor Economics Expert",
+                date: "2025-08-31"
+            },
+            {
+                id: 13,
+                title: "Revolutionary AI Discovers New Antibiotics",
+                category: "ai-tech",
+                summary: "MIT researchers use AI to discover new class of antibiotics effective against drug-resistant bacteria. The breakthrough could save millions of lives worldwide.",
+                imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=300&fit=crop",
+                author: "Medical Science Reporter",
+                date: "2025-08-30"
+            },
+            {
+                id: 14,
+                title: "US Treasury Sanctions Chinese AI Companies",
+                category: "breaking",
+                summary: "Treasury Department adds 12 Chinese AI firms to sanctions list over national security concerns. Companies involved in surveillance technology and military applications targeted.",
+                imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=300&fit=crop",
+                author: "National Security Reporter",
+                date: "2025-08-29"
+            },
+            {
+                id: 15,
+                title: "Google DeepMind Achieves AGI Breakthrough",
+                category: "ai-tech",
+                summary: "DeepMind's latest AI system demonstrates human-level performance across diverse cognitive tasks. Researchers debate whether this constitutes artificial general intelligence.",
+                imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop",
+                author: "AI Research Correspondent",
+                date: "2025-08-28"
+            },
+            {
+                id: 16,
+                title: "China's AI Surveillance State Expands to 500 Cities",
+                category: "china-news",
+                summary: "Chinese authorities deploy AI-powered surveillance systems in 500 cities, using facial recognition and behavior analysis. Human rights groups raise privacy concerns.",
+                imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop",
+                author: "Privacy Rights Reporter",
+                date: "2025-08-27"
+            },
+            {
+                id: 17,
+                title: "AI Climate Models Predict Extreme Weather Events",
+                category: "analysis",
+                summary: "New AI-powered climate models show 90% accuracy in predicting extreme weather 30 days in advance. Technology could revolutionize disaster preparedness globally.",
+                imageUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&h=300&fit=crop",
+                author: "Climate Science Expert",
+                date: "2025-08-26"
+            },
+            {
+                id: 18,
+                title: "Microsoft Announces $50 Billion AI Infrastructure Investment",
+                category: "us-news",
+                summary: "Microsoft commits to massive AI infrastructure expansion, including new data centers and GPU clusters. Investment aims to support growing demand for AI services.",
+                imageUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&h=300&fit=crop",
+                author: "Tech Industry Analyst",
+                date: "2025-08-25"
+            },
+            {
+                id: 19,
+                title: "Chinese Students Lead Global AI Competition",
+                category: "china-news",
+                summary: "Students from Chinese universities win 70% of international AI competitions this year. Success attributed to strong government support and rigorous STEM education.",
+                imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&h=300&fit=crop",
+                author: "Education Reporter",
+                date: "2025-08-24"
+            },
+            {
+                id: 20,
+                title: "AI Agents Begin Managing Investment Portfolios",
+                category: "ai-tech",
+                summary: "Wall Street firms deploy AI agents capable of autonomous trading and portfolio management. Early results show 23% better performance than human-managed funds.",
+                imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&h=300&fit=crop",
+                author: "Financial Technology Expert",
+                date: "2025-08-23"
+            }
+        ];
+          
+        let articles = JSON.parse(localStorage.getItem('aiNewsArticles')) || defaultArticles;
+let nextId = articles.length ? Math.max(...articles.map(a => a.id)) + 1 : 1;
+          
+        function renderArticles(articlesToRender = articles) {
+            const newsGrid = document.getElementById('newsGrid');
+            
+            if (articlesToRender.length === 0) {
+                localStorage.setItem('aiNewsArticles', JSON.stringify(articles));
+                newsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #64748b;">
+                        <h3>No articles found</h3>
+                        <p>Try adjusting your search or filter criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+                        newsGrid.innerHTML = articlesToRender.map(article => `
+                                <a href="article.html?id=${article.id}" class="news-link" style="text-decoration:none; color:inherit;">
+                                    <article class="news-card" data-category="${article.category}">
+                                        ${article.imageUrl ? `<img src="${article.imageUrl}" alt="${article.title}" class="news-image" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&h=300&fit=crop'">` : ''}
+                                        <div class="news-content">
+                                                <span class="news-category category-${article.category}">
+                                                        ${getCategoryIcon(article.category)} ${getCategoryDisplay(article.category)}
+                                                </span>
+                                                <h3 class="news-title">${article.title}</h3>
+                                                <p class="news-summary">${article.summary}</p>
+                                                <div class="news-meta">
+                                                        <span>👤 ${article.author}</span>
+                                                        <span>📅 ${formatDate(article.date)}</span>
+                                                </div>
+                                        </div>
+                                    </article>
+                                </a>
+                        `).join('');
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'us-news': '🇺🇸',
+                'china-news': '🇨🇳',
+                'ai-tech': '🤖',
+                'analysis': '📊',
+                'breaking': '⚡'
+            };
+            return icons[category] || '📰';
+        }
+
+        function getCategoryDisplay(category) {
+            const categories = {
+                'us-news': 'US News',
+                'china-news': 'China News',
+                'ai-tech': 'AI & Tech',
+                'analysis': 'Analysis',
+                'breaking': 'Breaking News'
+            };
+            return categories[category] || category;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+
+        function toggleAdmin() {
+            const adminPanel = document.getElementById('adminPanel');
+            const isVisible = adminPanel.style.display === 'block';
+            adminPanel.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                adminPanel.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function addArticle(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('title').value.trim();
+            const category = document.getElementById('category').value;
+            const summary = document.getElementById('summary').value.trim();
+            const imageUrl = document.getElementById('imageUrl').value.trim();
+            const author = document.getElementById('author').value.trim();
+            
+            if (!title || !summary || !author) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            const newArticle = {
+                id: nextId++,
+                title,
+                category,
+                summary,
+                imageUrl: imageUrl || null,
+                author,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            articles.unshift(newArticle);
+            renderArticles();
+            localStorage.setItem('aiNewsArticles', JSON.stringify(articles));
+            
+            event.target.reset();
+            document.getElementById('author').value = 'AI News Hub Team';
+            document.getElementById('adminPanel').style.display = 'none';
+            
+            alert('✅ Article published successfully!');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterByCategory(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (category === 'all') {
+                renderArticles(articles);
+            } else {
+                const filtered = articles.filter(article => article.category === category);
+                renderArticles(filtered);
+            }
+        }
+
+        function filterNews() {
+            const searchTerm = event.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                renderArticles(articles);
+                return;
+            }
+            
+            const filtered = articles.filter(article => 
+                article.title.toLowerCase().includes(searchTerm) ||
+                article.summary.toLowerCase().includes(searchTerm) ||
+                article.author.toLowerCase().includes(searchTerm) ||
+                getCategoryDisplay(article.category).toLowerCase().includes(searchTerm)
+            );
+            
+            renderArticles(filtered);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderArticles();
+        });
+    </script>
+</body>
+</html>

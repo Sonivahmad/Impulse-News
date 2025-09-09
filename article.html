@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Hub - Article</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 3rem auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+            padding: 2.5rem 2rem;
+        }
+        .news-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+        .news-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+        }
+        .category-us-news { background: #fee2e2; color: #dc2626; }
+        .category-china-news { background: #fef3c7; color: #d97706; }
+        .category-ai-tech { background: #ede9fe; color: #7c3aed; }
+        .category-analysis { background: #cffafe; color: #0891b2; }
+        .category-breaking { background: #dcfce7; color: #16a34a; }
+        .news-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: #1e293b;
+        }
+        .news-summary {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="articleContainer">
+        <a href="ai_news_website.html" class="back-link">&larr; Back to News</a>
+        <div id="articleContent">
+            <!-- Article details will be loaded here -->
+        </div>
+    </div>
+    <script>
+        // Load articles from localStorage, fallback to defaultArticles if needed
+        let defaultArticles = [
+            { id: 1, title: "Biden Administration Unveils New AI Executive Order", category: "us-news", summary: "President Biden signs comprehensive AI executive order requiring safety testing for powerful AI systems, establishing new oversight mechanisms, and promoting AI innovation while protecting workers and consumers.", imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop", author: "Sarah Johnson", date: "2025-09-10", videoUrl: null },
+            { id: 2, title: "China's Baidu Releases Advanced AI Model ERNIE 4.0", category: "china-news", summary: "Baidu unveils ERNIE 4.0, claiming performance improvements over GPT-4 in Chinese language tasks. The model demonstrates enhanced reasoning capabilities and multimodal understanding.", imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop", author: "Michael Chen", date: "2025-09-09", videoUrl: null },
+            { id: 3, title: "US-China AI Trade War: Economic Impact Analysis", category: "analysis", summary: "New research shows AI trade restrictions between US and China have cost both economies $47 billion. Experts discuss potential paths to cooperation in AI development.", imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=300&fit=crop", author: "Dr. Emily Rodriguez", date: "2025-09-08", videoUrl: null },
+            { id: 4, title: "Breakthrough: Quantum-Enhanced AI Achieves New Milestone", category: "ai-tech", summary: "Researchers demonstrate quantum computer solving complex optimization problems 1000x faster than classical AI. The breakthrough could revolutionize drug discovery and financial modeling.", imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&h=300&fit=crop", author: "Prof. James Liu", date: "2025-09-07", videoUrl: null },
+            { id: 5, title: "NVIDIA vs Chinese AI Chips: The Battle Intensifies", category: "breaking", summary: "Chinese semiconductor companies unveil new AI chips designed to compete with NVIDIA's H100. US export controls drive innovation in China's domestic chip industry.", imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop", author: "Tech Desk", date: "2025-09-10", videoUrl: null },
+            { id: 6, title: "Pentagon Establishes AI Ethics Board", category: "us-news", summary: "Department of Defense creates new oversight body for military AI applications. The board will review autonomous weapon systems and ensure human oversight in critical decisions.", imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop", author: "Defense Reporter", date: "2025-09-06", videoUrl: null },
+            { id: 7, title: "China Announces $100 Billion AI Investment Fund", category: "china-news", summary: "Beijing unveils massive state-backed fund to accelerate AI research and development. Focus areas include healthcare AI, autonomous vehicles, and smart city technologies.", imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=500&h=300&fit=crop", author: "Beijing Correspondent", date: "2025-09-05", videoUrl: null },
+            { id: 8, title: "AI in Healthcare: US-China Collaboration Emerges", category: "analysis", summary: "Despite broader tensions, US and Chinese researchers find common ground in AI-powered drug discovery. Joint projects show promise for addressing global health challenges.", imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=300&fit=crop", author: "Health Tech Analyst", date: "2025-09-04", videoUrl: null },
+            { id: 9, title: "Meta Announces Open Source AI Competitor to ChatGPT", category: "ai-tech", summary: "Meta releases Llama 3, an open-source large language model designed to compete with OpenAI's GPT-4. The move could reshape the AI landscape and increase global access.", imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop", author: "Silicon Valley Reporter", date: "2025-09-03", videoUrl: null },
+            { id: 10, title: "Congress Proposes Bipartisan AI Regulation Framework", category: "us-news", summary: "House and Senate introduce comprehensive AI regulation bill focusing on transparency, safety testing, and liability frameworks. Industry leaders express cautious optimism.", imageUrl: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=500&h=300&fit=crop", author: "Capitol Hill Reporter", date: "2025-09-02", videoUrl: null },
+            { id: 11, title: "Alibaba's AI Cloud Services Expand Globally", category: "china-news", summary: "Alibaba Cloud launches AI services in 15 new countries, challenging AWS and Google Cloud. The expansion includes language models optimized for local markets.", imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop", author: "Cloud Computing Expert", date: "2025-09-01", videoUrl: null },
+            { id: 12, title: "AI Job Market: Winners and Losers in 2025", category: "analysis", summary: "Comprehensive analysis of AI's impact on employment shows 40% job displacement but 60% new job creation. Reskilling programs become critical for workforce adaptation.", imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop", author: "Labor Economics Expert", date: "2025-08-31", videoUrl: null },
+            { id: 13, title: "Revolutionary AI Discovers New Antibiotics", category: "ai-tech", summary: "MIT researchers use AI to discover new class of antibiotics effective against drug-resistant bacteria. The breakthrough could save millions of lives worldwide.", imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=300&fit=crop", author: "Medical Science Reporter", date: "2025-08-30", videoUrl: null },
+            { id: 14, title: "US Treasury Sanctions Chinese AI Companies", category: "breaking", summary: "Treasury Department adds 12 Chinese AI firms to sanctions list over national security concerns. Companies involved in surveillance technology and military applications targeted.", imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=300&fit=crop", author: "National Security Reporter", date: "2025-08-29", videoUrl: null },
+            { id: 15, title: "Google DeepMind Achieves AGI Breakthrough", category: "ai-tech", summary: "DeepMind's latest AI system demonstrates human-level performance across diverse cognitive tasks. Researchers debate whether this constitutes artificial general intelligence.", imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop", author: "AI Research Correspondent", date: "2025-08-28", videoUrl: null },
+            { id: 16, title: "China's AI Surveillance State Expands to 500 Cities", category: "china-news", summary: "Chinese authorities deploy AI-powered surveillance systems in 500 cities, using facial recognition and behavior analysis. Human rights groups raise privacy concerns.", imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop", author: "Privacy Rights Reporter", date: "2025-08-27", videoUrl: null },
+            { id: 17, title: "AI Climate Models Predict Extreme Weather Events", category: "analysis", summary: "New AI-powered climate models show 90% accuracy in predicting extreme weather 30 days in advance. Technology could revolutionize disaster preparedness globally.", imageUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&h=300&fit=crop", author: "Climate Science Expert", date: "2025-08-26", videoUrl: null },
+            { id: 18, title: "Microsoft Announces $50 Billion AI Infrastructure Investment", category: "us-news", summary: "Microsoft commits to massive AI infrastructure expansion, including new data centers and GPU clusters. Investment aims to support growing demand for AI services.", imageUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&h=300&fit=crop", author: "Tech Industry Analyst", date: "2025-08-25", videoUrl: null },
+            { id: 19, title: "Chinese Students Lead Global AI Competition", category: "china-news", summary: "Students from Chinese universities win 70% of international AI competitions this year. Success attributed to strong government support and rigorous STEM education.", imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&h=300&fit=crop", author: "Education Reporter", date: "2025-08-24", videoUrl: null },
+            { id: 20, title: "AI Agents Begin Managing Investment Portfolios", category: "ai-tech", summary: "Wall Street firms deploy AI agents capable of autonomous trading and portfolio management. Early results show 23% better performance than human-managed funds.", imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&h=300&fit=crop", author: "Financial Technology Expert", date: "2025-08-23", videoUrl: null }
+        ];
+        let articles = [];
+        try {
+            articles = JSON.parse(localStorage.getItem('aiNewsArticles')) || defaultArticles;
+        } catch (e) {
+            articles = defaultArticles;
+        }
+        function getCategoryIcon(category) {
+            const icons = {
+                'us-news': '🇺🇸',
+                'china-news': '🇨🇳',
+                'ai-tech': '🤖',
+                'analysis': '📊',
+                'breaking': '⚡'
+            };
+            return icons[category] || '📰';
+        }
+        function getCategoryDisplay(category) {
+            const categories = {
+                'us-news': 'US News',
+                'china-news': 'China News',
+                'ai-tech': 'AI & Tech',
+                'analysis': 'Analysis',
+                'breaking': 'Breaking News'
+            };
+            return categories[category] || category;
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+        function getArticleIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get('id'), 10);
+        }
+        function renderArticle() {
+            const id = getArticleIdFromUrl();
+            const article = articles.find(a => a.id === id);
+            const contentDiv = document.getElementById('articleContent');
+            if (!article) {
+                contentDiv.innerHTML = `<h2>Article Not Found</h2><p>The article you are looking for does not exist.</p>`;
+                return;
+            }
+            contentDiv.innerHTML = `
+                ${article.imageUrl ? `<img src="${article.imageUrl}" alt="${article.title}" class="news-image" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&h=300&fit=crop'">` : ''}
+                ${article.videoUrl ? renderVideoEmbed(article.videoUrl) : ''}
+                <span class="news-category category-${article.category}">${getCategoryIcon(article.category)} ${getCategoryDisplay(article.category)}</span>
+                <h1 class="news-title">${article.title}</h1>
+                <div class="news-meta">
+                    <span>👤 ${article.author}</span>
+                    <span>📅 ${formatDate(article.date)}</span>
+                </div>
+                <div class="news-summary">${article.summary}</div>
+            `;
+
+        }
+
+        function renderVideoEmbed(url) {
+            // YouTube
+            const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+            if (ytMatch) {
+                return `<div style="margin-bottom:1rem;"><iframe width="100%" height="320" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allowfullscreen></iframe></div>`;
+            }
+            // Direct video
+            if (url.match(/\.(mp4|webm|ogg)$/i)) {
+                return `<div style="margin-bottom:1rem;"><video width="100%" height="320" controls><source src="${url}"></video></div>`;
+            }
+            // Fallback: link
+            return `<div style="margin-bottom:1rem;"><a href="${url}" target="_blank">Watch News Video</a></div>`;
+        }
+        document.addEventListener('DOMContentLoaded', renderArticle);
+    </script>
+</body>
+</html>
+
